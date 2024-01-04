@@ -50,7 +50,7 @@ class QuickSort(SortingAlgorithm):
         """
 
         # optimization for small segments
-        if self.use_optimization and right - left < 4:
+        if self.use_optimization and right - left < 7:
             self.seg_insertion_sort(left, right)
             return -1 #  terminate the recursion
 

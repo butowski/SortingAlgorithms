@@ -1,45 +1,59 @@
 from QuickSort import QuickSort
 from BubbleSort import BubbleSort
+from insertion_sort import InsertionSort
 import numpy as np
 import time
 from matplotlib import pyplot as plt
 
-
+def perform_measurements(alg_list, num_measurements):
+    for alg in alg_list:
+        alg_obj = alg['alg']
+        # calculate average over mutliple runs. Discard the first run
+        avg = 0
+        start = time.perf_counter()
+        alg_obj.sort()
+        end = time.perf_counter()
+        for i in range(0,num_measurements):
+            start = time.perf_counter()
+            alg_obj.sort()
+            end = time.perf_counter()
+            avg = avg + (end - start)
+        avg = avg / num_measurements
+        alg['duration'] = avg
+        
 
 if __name__ == "__main__":
-
-
     #Profiling the different sorting algorithms
+    list_length = 400
+    num_measurements = 100
 
     rng = np.random.default_rng(12345)
-    data = rng.integers(0,5000,10000)
+    data = rng.integers(0,100,list_length)
 
 
     quick_sort = QuickSort(data)
+    quick_sort_opt = QuickSort(data, use_optimization=True)
     bubble_sort = BubbleSort(data)
+    insert_sort = InsertionSort(data)
 
-    # evaluate quick sort
-    start = time.perf_counter()
-    quick_sort.sort()
-    end = time.perf_counter()
-    quick_sort_time = end-start
-    print("QuickSort took {} seconds".format(quick_sort_time))
+    measurements = [
+        {'name': "QuickSort", 'alg': quick_sort, "duration": -1},
+        {'name': "QuickSort Optimized", 'alg': quick_sort_opt, "duration": -1},
+        {'name': "BubbleSort", 'alg' :  bubble_sort, "duration" : -1},
+        {'name': "InsertionSort", 'alg': insert_sort, "duration" : -1}
+    ]
 
-    #evaluate bubble sort
-    start = time.perf_counter()
-    bubble_sort.sort()
-    end = time.perf_counter()
-    bubble_sort_time = end-start
-    print("BubbleSort took {} seconds".format(bubble_sort_time))
+    perform_measurements(measurements, num_measurements)
+
 
     #Plotting the different sorting algorithms
     fig, ax = plt.subplots()
-    algorithms = ['QuickSort', 'BubbleSort']
-    times = [quick_sort_time, bubble_sort_time]
-    bar_labels = ["QuickSort", "BubbleSort"]
-    ax.bar(algorithms, times, label=bar_labels)
+    bar_labels = [alg['name'] for alg in measurements]
+    times = [alg['duration'] for alg in measurements]
+
+    ax.bar(bar_labels, times, label=bar_labels)
     ax.set_ylabel("Execution Time")
     ax.set_xlabel("Algorithm")
-    ax.set_title("Execution Time of Sorting algorithms")
+    ax.set_title("Avg Execution Time of Sorting algorithms len={}".format(list_length))
 
     plt.show()
