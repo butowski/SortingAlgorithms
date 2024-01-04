@@ -39,6 +39,21 @@ class TestAlgorithms(unittest.TestCase):
             qs.sort()
             print("Sorted: {}".format(c))
             self.is_sorted(list(c))
+        
+    def test_quick_sort_optimized(self):
+        c = [2,1,4,3]
+        qs_opt = QuickSort(c, use_optimization=True)
+        qs_opt.sort()
+        self.is_sorted(qs_opt.data)
+
+    def test_quick_sort_optimized_random(self):
+        #random lists
+        candidates = [self.get_random_list(10) for x in range(0,10)]
+        for c in candidates:
+            qs_opt = QuickSort(c, use_optimization=True)
+            qs_opt.sort()
+            self.is_sorted(qs_opt.data)
+    
 
     def test_insertion_sort(self):
         data = [3, 5, 6, 1, 4, 2, 8, 1]
