@@ -1,9 +1,12 @@
+from collections.abc import Sequence
 import unittest
 import random
 import numpy as np
 from insertion_sort import InsertionSort
 from BubbleSort import BubbleSort
 from QuickSort import QuickSort
+from SortingAlgorithm import SortingAlgorithm
+from merge_sort import MergeSort
 
 class TestAlgorithms(unittest.TestCase):
     def is_sorted(self, data) -> bool:
@@ -12,6 +15,20 @@ class TestAlgorithms(unittest.TestCase):
 
     def get_random_list(self, length):
         return [random.randint(0,100) for _ in range(0,length)]
+
+    def perform_random_test(self, alg, verbose=False, **kwargs):
+        candidates = [self.get_random_list(10) for x in range(0,10)]
+        for c in candidates:
+            if 'useOptimization' in kwargs:
+                instance = alg(c)
+            else:
+                instance = alg(c)
+            instance.sort()
+            self.is_sorted(instance.data)
+            print(instance.data)
+
+
+    # ------------- individual test cases ------------------
 
     def test_quick_sort(self):
         candidates = [
@@ -75,6 +92,17 @@ class TestAlgorithms(unittest.TestCase):
         qs = QuickSort(arr)
         qs.sort()
         print(arr)
+
+
+
+    def test_merge_sort(self):
+        arr = [4,2,3,1]
+        ms = MergeSort(arr)
+        ms.sort()
+        self.is_sorted(ms.data)
+
+    def test_merge_sort_random(self):
+        self.perform_random_test(MergeSort)
 
 if __name__ == '__main__':
     unittest.main()
