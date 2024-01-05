@@ -19,10 +19,7 @@ class TestAlgorithms(unittest.TestCase):
     def perform_random_test(self, alg, verbose=False, **kwargs):
         candidates = [self.get_random_list(10) for x in range(0,10)]
         for c in candidates:
-            if 'useOptimization' in kwargs:
-                instance = alg(c)
-            else:
-                instance = alg(c)
+            instance = alg(c, **kwargs)
             instance.sort()
             self.is_sorted(instance.data)
             print(instance.data)
@@ -48,14 +45,7 @@ class TestAlgorithms(unittest.TestCase):
             self.is_sorted(list(c))
 
     def test_quick_sort_random(self):
-        candidates = [self.get_random_list(10) for x in range(0,10)]
-        print(candidates)
-        for c in candidates:
-            print("Testing {}".format(c))
-            qs = QuickSort(c)
-            qs.sort()
-            print("Sorted: {}".format(c))
-            self.is_sorted(list(c))
+        self.perform_random_test(QuickSort)
         
     def test_quick_sort_optimized(self):
         c = [2,1,4,3]
@@ -64,12 +54,8 @@ class TestAlgorithms(unittest.TestCase):
         self.is_sorted(qs_opt.data)
 
     def test_quick_sort_optimized_random(self):
-        #random lists
-        candidates = [self.get_random_list(10) for x in range(0,10)]
-        for c in candidates:
-            qs_opt = QuickSort(c, use_optimization=True)
-            qs_opt.sort()
-            self.is_sorted(qs_opt.data)
+        self.perform_random_test(QuickSort, use_optimization=True)
+        
     
 
     def test_insertion_sort(self):
@@ -79,11 +65,7 @@ class TestAlgorithms(unittest.TestCase):
         self.is_sorted(insertion_sort.data)
 
     def test_insertion_sort(self):
-        candidates = [self.get_random_list(10) for x in range(0,10)]
-        for c in candidates:
-            insertion_sort = InsertionSort(c)
-            insertion_sort.sort()
-            self.is_sorted(insertion_sort.data)
+        self.perform_random_test(InsertionSort)
 
 
 

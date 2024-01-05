@@ -2,9 +2,9 @@ from SortingAlgorithm import SortingAlgorithm
 
 class QuickSort(SortingAlgorithm):
 
-    def __init__(self, data, use_optimization=False):
-        super().__init__(data)
-        self.use_optimization = use_optimization
+    def __init__(self, data, **kwargs):
+        super().__init__(data, **kwargs)
+        self.use_optimization = kwargs.get('use_optimization', False)
 
     # ---------- optimization with insertion sort ------
     def shift_right(self, left, right):

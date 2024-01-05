@@ -1,6 +1,6 @@
 class SortingAlgorithm:
 
-    def __init__(self, data):
+    def __init__(self, data, **kwargs):
         self.data = data
 
     def sort(self):
