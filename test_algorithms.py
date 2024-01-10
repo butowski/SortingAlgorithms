@@ -7,17 +7,18 @@ from BubbleSort import BubbleSort
 from QuickSort import QuickSort
 from SortingAlgorithm import SortingAlgorithm
 from merge_sort import MergeSort
+from radix_sort import RadixSort
 
 class TestAlgorithms(unittest.TestCase):
     def is_sorted(self, data) -> bool:
         for i in range(0,len(data) - 1):
             self.assertTrue(data[i] <= data[i+1])
 
-    def get_random_list(self, length):
-        return [random.randint(0,100) for _ in range(0,length)]
+    def get_random_list(self, length, num_range):
+        return [random.randint(0,num_range) for _ in range(0,length)]
 
-    def perform_random_test(self, alg, verbose=False, **kwargs):
-        candidates = [self.get_random_list(10) for x in range(0,10)]
+    def perform_random_test(self, alg, num_range=100, verbose=False, **kwargs):
+        candidates = [self.get_random_list(10, num_range) for x in range(0,10)]
         for c in candidates:
             instance = alg(c, **kwargs)
             instance.sort()
@@ -85,6 +86,24 @@ class TestAlgorithms(unittest.TestCase):
 
     def test_merge_sort_random(self):
         self.perform_random_test(MergeSort)
+
+    def test_radix_sort(self):
+        arr = [405, 246, 328, 2]
+        rs = RadixSort(arr)
+        rs.sort()
+        self.is_sorted(rs.data)
+
+    def test_get_digit(self):
+        arr = [405, 246, 328]
+        rs = RadixSort(arr)
+        self.assertEqual(rs.get_digit(405, 0), 5)
+        self.assertEqual(rs.get_digit(405, 1), 0)
+        self.assertEqual(rs.get_digit(405, 2), 4)
+
+        self.assertEqual(rs.get_digit(1298172, 4), 9)
+
+    def test_radix_sort_random(self):
+        self.perform_random_test(RadixSort, 10000000000000)
 
 if __name__ == '__main__':
     unittest.main()
