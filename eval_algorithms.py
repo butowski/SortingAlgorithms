@@ -1,7 +1,7 @@
 from QuickSort import QuickSort
 from BubbleSort import BubbleSort
 from insertion_sort import InsertionSort
-from radix_sort import RadixSort
+from radix_sort import RadixSort, RadixSortEfficient
 import numpy as np
 import time
 from matplotlib import pyplot as plt
@@ -25,18 +25,21 @@ def perform_measurements(alg_list, num_measurements):
 
 if __name__ == "__main__":
     #Profiling the different sorting algorithms
-    list_length = 400
+    list_length = 600
     num_measurements = 100
+    rand_upper_bound = 10000000
+
 
     rng = np.random.default_rng(12345)
-    data = rng.integers(0,1000000,list_length)
+    data = rng.integers(0,rand_upper_bound,list_length)
 
 
-    quick_sort = QuickSort(data)
-    quick_sort_opt = QuickSort(data, use_optimization=True)
-    bubble_sort = BubbleSort(data)
-    insert_sort = InsertionSort(data)
-    radix_sort = RadixSort(data)
+    quick_sort = QuickSort(data.copy())
+    quick_sort_opt = QuickSort(data.copy(), use_optimization=True)
+    bubble_sort = BubbleSort(data.copy())
+    insert_sort = InsertionSort(data.copy())
+    radix_sort = RadixSort(data.copy(), max_num_digits=len(str(rand_upper_bound)))
+    radix_sort_efficient = RadixSortEfficient(data.copy(), max_num_digits=len(str(rand_upper_bound)))
 
     measurements = [
         {'name': "QuickSort", 'alg': quick_sort, "duration": -1},
@@ -44,7 +47,7 @@ if __name__ == "__main__":
         {'name': "BubbleSort", 'alg' :  bubble_sort, "duration" : -1},
         {'name': "InsertionSort", 'alg': insert_sort, "duration" : -1},
         {'name': "RadixSort", 'alg': radix_sort, "duration" : -1},
-        
+        {'name': "RadixSort Memory Optimized", 'alg': radix_sort_efficient, "duration": -1}
     ]
 
     perform_measurements(measurements, num_measurements)
