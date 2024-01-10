@@ -1,6 +1,7 @@
 from QuickSort import QuickSort
 from BubbleSort import BubbleSort
 from insertion_sort import InsertionSort
+from radix_sort import RadixSort
 import numpy as np
 import time
 from matplotlib import pyplot as plt
@@ -28,19 +29,22 @@ if __name__ == "__main__":
     num_measurements = 100
 
     rng = np.random.default_rng(12345)
-    data = rng.integers(0,100,list_length)
+    data = rng.integers(0,1000000,list_length)
 
 
     quick_sort = QuickSort(data)
     quick_sort_opt = QuickSort(data, use_optimization=True)
     bubble_sort = BubbleSort(data)
     insert_sort = InsertionSort(data)
+    radix_sort = RadixSort(data)
 
     measurements = [
         {'name': "QuickSort", 'alg': quick_sort, "duration": -1},
         {'name': "QuickSort Optimized", 'alg': quick_sort_opt, "duration": -1},
         {'name': "BubbleSort", 'alg' :  bubble_sort, "duration" : -1},
-        {'name': "InsertionSort", 'alg': insert_sort, "duration" : -1}
+        {'name': "InsertionSort", 'alg': insert_sort, "duration" : -1},
+        {'name': "RadixSort", 'alg': radix_sort, "duration" : -1},
+        
     ]
 
     perform_measurements(measurements, num_measurements)
