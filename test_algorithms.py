@@ -7,7 +7,7 @@ from BubbleSort import BubbleSort
 from QuickSort import QuickSort
 from SortingAlgorithm import SortingAlgorithm
 from merge_sort import MergeSort
-from radix_sort import RadixSort
+from radix_sort import RadixSort, RadixSortEfficient
 
 class TestAlgorithms(unittest.TestCase):
     def is_sorted(self, data) -> bool:
@@ -102,8 +102,20 @@ class TestAlgorithms(unittest.TestCase):
 
         self.assertEqual(rs.get_digit(1298172, 4), 9)
 
+    
     def test_radix_sort_random(self):
-        self.perform_random_test(RadixSort, 10000000000000)
+        radix_range = 10000000000000
+        self.perform_random_test(RadixSort, radix_range, max_num_digits=len(str(radix_range)))
+
+    def test_efficient_radix_sort(self):
+        arr = [405, 246, 328, 2]
+        rs = RadixSortEfficient(arr, 3)
+        rs.sort()
+        self.is_sorted(rs.data)
+
+    def test_radix_sort_efficient_random(self):
+        radix_range = 10000000000000
+        self.perform_random_test(RadixSortEfficient, radix_range, max_num_digits=len(str(radix_range)))
 
 if __name__ == '__main__':
     unittest.main()
